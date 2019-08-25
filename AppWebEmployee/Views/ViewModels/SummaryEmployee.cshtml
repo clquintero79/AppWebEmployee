@@ -1,0 +1,21 @@
+﻿@model AppWebEmployee.ViewModels.SummaryEmployee
+@{
+    ViewData["Title"] = "SummaryEmployee";
+}
+
+<h1>Total Empleados</h1>
+
+
+
+<div class="card">
+    <div class="card-header">
+        Departamento: @ViewData["Department"]
+    </div>
+    <div class="card-body">
+        <h5 class="card-title">Resumen</h5>
+        <p class="card-text">Empleados por departamento: @Model.EmployeesDepartment </p>
+    </div>
+    <div class="card-footer">
+        Total Empelados: @Model.TotalEmployees
+    </div>
+</div>
