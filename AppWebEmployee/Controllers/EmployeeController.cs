@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using AppWebEmployee.Models;
 using AppWebEmployee.Services;
 using AppWebEmployee.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppWebEmployee.Controllers
@@ -15,14 +17,16 @@ namespace AppWebEmployee.Controllers
         #region Atributos
 
         IEmployee EmployeeRepository { get; set; }
+        private readonly IHostingEnvironment hostingEnvironment;
 
         #endregion
 
         #region Constructores
 
-        public EmployeeController(IEmployee employeeRepository)
+        public EmployeeController(IEmployee employeeRepository, IHostingEnvironment hosting)
         {
             EmployeeRepository = employeeRepository;
+            hostingEnvironment = hosting;
         }
         #endregion
         #region Acciones
@@ -37,28 +41,55 @@ namespace AppWebEmployee.Controllers
         }
 
         [HttpGet]
-        public IActionResult Create()
+        public ViewResult Create()
         {
-            return View();
+            return View("CreateViewModel");
         }
 
-       
+
 
         [HttpPost]
 
-        public IActionResult Create(Employee employee)
+        public IActionResult Create(CreateViewModel model)
         {
             if (ModelState.IsValid)
             {
-                Employee newEmployee = EmployeeRepository.Add(employee);
-                //return RedirectToAction("Index");
-                //return RedirectToAction("details", new { id = newEmployee.Id });
+                string uniqueFileName = null;
+
+                // Si es diferente de nulo ha seleccionado una iamgen a subir
+                if (model.Photo != null)
+                {
+                    // Las iamgenes se van a s subir en la carpeta images de wwroot
+                    //Con el proposito que lo reconozca vamos a inyectar el servicio
+                    // HostingEnvironment service de ASP.NET Core
+                    string uploadsFolder = Path.Combine(hostingEnvironment.WebRootPath, "images");
+                    // Para asegurarse que el nombre será único le vamos asignar un
+                    // GUID _ y el nombre dle archivo
+                    uniqueFileName = $"{DateTime.Now.ToString("yyyyMMddHHmmss")}_{model.Photo.FileName}";
+                    string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                    // Utilizamos CopyTo()de la interfaz IFormFile para
+                    // copiar el archivo a wwwroot/images 
+                    model.Photo.CopyTo(new FileStream(filePath, FileMode.Create));
+                }
+
+                Employee newEmployee = new Employee
+                {
+                    Name = model.Name,
+                    Email = model.Email,
+                    Department = model.Department,
+                    // Guardamos el nombre del archivo en la propiedad PhotoPath 
+                    PhotoPath = uniqueFileName
+                };
+
+                EmployeeRepository.Add(newEmployee);
+                return RedirectToAction("Detail", new { id = newEmployee.Id });
+
             }
 
             return View();
         }
 
-        public IActionResult Detail(int id)
+            public IActionResult Detail(int id)
         {
             var model =EmployeeRepository.GetEmployee(id);
             return View(model);

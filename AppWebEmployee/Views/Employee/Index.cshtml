@@ -1,42 +1,33 @@
 ﻿@model IEnumerable<Employee>
 @{
     ViewData["Title"] = "Index";
-}
+   }<div>
+     <a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Nuevo</a>
+    </div>
 
-<h1>@ViewData["Mensaje"]</h1>
-<a asp-controller="Employee" asp-action="Create" class="btn btn-primary">Nuevo</a>
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Department</th>
-        </tr>
-    </thead>
-    <tbody>
+    <div class="card-deck">
         @foreach (var employee in Model)
         {
-        <tr>
-            <td>
-                @employee.Id
-            </td>
-            <td>
-                @employee.Name
-            </td>
-            <td>
-                @employee.Department
-            </td>
-            <td>
-                <a asp-action="Detail" asp-route-id="@employee.Id" class="btn btn-success"><i class="fas fa-user-edit"></i></a>
-            </td>
-            <td>
-                <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
-            </td>
-            <td>
-                @Html.ActionLink("Totales", "Total", new { dept = employee.Department })
-                @*<a asp-action="Total" asp-all-route-data="@employee.Department" class="btn btn-warning"><i class="fas fa-list-alt"></i></a>*@
-            </td>
-        </tr>
+            var photoPath = "~/images/" + (employee.PhotoPath ?? "noimage.jpg");
+            <div class="card m-3" style="min-width: 18rem; max-width:30.5%;">
+                <div class="card-header">
+                    <h3>@employee.Name</h3>
+                </div>
+
+                <img class="card-img-top imageThumbnail" src="@photoPath"
+                     asp-append-version="true" />
+
+                <div class="card-footer text-center">
+
+                    <a asp-action="Detail" asp-route-id="@employee.Id" class="btn btn-primary">Ver</a>
+                    <a asp-action="Edit" asp-route-id="@employee.Id" class="btn btn-success">Editar</a>
+                    <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger">Borrar</a>
+                    @*@Html.ActionLink("Totales", "Total", new { dept = employee.Department })*@
+
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+
+
+               

@@ -1,0 +1,139 @@
+﻿@model CreateViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Crear Empleados</h1>
+<h1>Create</h1>
+<form enctype="multipart/form-data" method="post" class="mt-3">
+    <div class="form-group row">
+        <label asp-for="Name" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Name" class="form-control" placeholder="Name">
+            <span asp-validation-for="Name" class="text-danger"></span>
+
+        </div>
+    </div>
+    <div class="form-group row">
+        <label asp-for="Email" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <input asp-for="Email" class="form-control" placeholder="Email">
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Department" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <select asp-for="Department" class="custom-select mr-sm-2"
+                    asp-items="Html.GetEnumSelectList<Dept>()">
+                <option value="">Please Select</option>
+            </select>
+            <span asp-validation-for="Department" class="text-danger"></span>
+        </div>
+    </div>
+
+    <div class="form-group row">
+        <label asp-for="Photo" class="col-sm-2 col-form-label"></label>
+        <div class="col-sm-10">
+            <div class="custom-file">
+                <input asp-for="Photo" class="form-control custom-file-input">
+                <label class="custom-file-label">Escoger el archivo.</label>
+                <img id="preview" class="thumbnail col-md-6" />
+            </div>
+        </div>
+    </div>
+    <div asp-validation-summary="All" class="text-danger"></div>
+
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary">Create</button>
+        </div>
+    </div>
+
+</form>
+<a asp-controller="Employee" asp-action="Index" class="btn btn-primary">Atras</a>
+
+@section Scripts {
+
+    @*<script>
+        $(document).ready(function () {
+            $('.custom-file-input').on("change", function () {
+                var fileName = $(this).val().split("\\").pop();
+                $(this).next('.custom-file-label').html(fileName);
+            });
+        });
+    </script>*@
+    <script>
+        $(function () {
+            $('.custom-file-input').change(function (e) {
+                 //$in=$(this);
+                 //$in.next('.custom-file-label').html($in.val());
+                var fileName = $(this).val().split("\\").pop();
+                 $(this).next('.custom-file-label').html(fileName);
+                addImage(e);
+            });
+
+            function addImage(e) {
+                var file = e.target.files[0],
+                    imageType = /image.*/;
+
+                if (!file.type.match(imageType))
+                    return;
+                
+                var reader = new FileReader();
+
+                reader.onload = fileOnload;
+
+
+                reader.readAsDataURL(file);
+
+            }
+
+            function fileOnload(e) {
+                var result = e.target.result;
+                $('#preview').attr("src", result);
+               var salida =  $('#preview').files[0].name;
+                
+               
+
+            }
+        });
+
+    </script>
+    @*<script>
+            function Fotografia(
+            adjuntar,filename,
+            preview){
+            this.adjuntar = document.getElementById(adjuntar);
+                this.preview = document.getElementById(preview);
+                this.filename = document.getElementsByClassName(filename);
+            //Self es una variable global para guardar la clase actual
+            self = this;
+            this.adjuntar.addEventListener('change', function () {
+
+                var reader = new FileReader(); //instanciamos el objeto de la api FileReader
+                reader.onload = function (e) {
+                    console.log(e.target.result)
+                    self.filename.value = e.target.result;
+                    self.preview.src = e.target.result;
+                    self.preview.style.display = "block";
+
+                };
+
+                //    // read the image file as a data URL.
+                reader.readAsDataURL(this.files[0]);
+
+            });
+        }
+            var fotografia = new Fotografia(
+                'Photo',
+                'custom-file-label',
+                'preview');
+            console.log(fotografia);
+        </script>*@
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+
