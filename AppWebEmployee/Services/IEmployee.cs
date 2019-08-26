@@ -9,8 +9,8 @@ namespace AppWebEmployee.Services
 {
     public interface IEmployee
     {
-         IEnumerable<Employee> GetAllEmployees();
-          Employee Add(Employee employee);
+        IEnumerable<Employee> GetAllEmployees();
+        Employee Add(Employee employee);
         Employee GetEmployee(int id);
        
      

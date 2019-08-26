@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AppWebEmployee.Models;
 using AppWebEmployee.Services;
 using AppWebEmployee.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AppWebEmployee.Controllers
@@ -40,6 +41,8 @@ namespace AppWebEmployee.Controllers
         {
             return View();
         }
+
+       
 
         [HttpPost]
 
