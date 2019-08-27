@@ -93,11 +93,11 @@ namespace AppWebEmployee.Controllers
             EmployeeRepository.Delete(id);
             return RedirectToAction("Index");
         }
-
-        public IActionResult Total(string dept)
+        [Route("EmployeeController/Total/{name}")]
+        public IActionResult Total(string name)
         {
-            var model = EmployeeRepository.TotEmpDept(dept);
-            ViewData["Department"] = dept;
+            var model = EmployeeRepository.TotEmpDept(name);
+            ViewData["Department"] = name;
             return View("../ViewModels/SummaryEmployee", model);
         }
 

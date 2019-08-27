@@ -32,9 +32,13 @@
             <td>
                 <a asp-action="Delete" asp-route-id="@employee.Id" class="btn btn-danger"><i class="far fa-trash-alt"></i></a>
             </td>
-            <td>
-                @Html.ActionLink("Totales", "Total", new { dept = employee.Department })
+            @*<td>
+                @Html.ActionLink("Totales", "Total", new { dept = employee.Department })*@
                 @*<a asp-action="Total" asp-all-route-data="@employee.Department" class="btn btn-warning"><i class="fas fa-list-alt"></i></a>*@
+            @*</td>*@
+            <td>
+               
+                <a asp-action="Total" asp-route-name="@employee.Department" class="btn btn-info"><i class="fas fa-list-alt"></i></a>
             </td>
         </tr>
         }
