@@ -17,5 +17,6 @@ namespace AppWebEmployee.Services
         void Update(Employee employeeChanges);
         void Delete(int Id);
         SummaryEmployee TotEmpDept(string dep);
+        void GetEmployeeGroup();
     }
 }

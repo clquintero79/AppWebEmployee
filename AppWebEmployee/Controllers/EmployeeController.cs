@@ -33,7 +33,9 @@ namespace AppWebEmployee.Controllers
 
         [HttpGet]
         public IActionResult Index()
+
         {
+            EmployeeRepository.GetEmployeeGroup();
             ViewData["Mensaje"] = "Esta es la lista de los empleados de la empresa";
             var model = EmployeeRepository.GetAllEmployees();
             return View(model);

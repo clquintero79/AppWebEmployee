@@ -50,6 +50,8 @@ namespace AppWebEmployee.Repository
             return employeesList;
         }
 
+        
+
         public Employee GetEmployee(int id)
         {
             var employee = employeesList.FirstOrDefault(x => x.Id == id);
@@ -73,6 +75,11 @@ namespace AppWebEmployee.Repository
                 EmployeesDepartment = employeesList.Where(x => x.Department.ToString() == dep).Count()
             };
             return summaryEmployee;
+        }
+
+        public void GetEmployeeGroup()
+        {
+            throw new NotImplementedException();
         }
     }
 }

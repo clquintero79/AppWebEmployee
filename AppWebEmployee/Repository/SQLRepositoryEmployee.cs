@@ -62,6 +62,11 @@ namespace AppWebEmployee.Repository
             return summaryEmployee;
         }
 
+        public void GetEmployeeGroup()
+        {
+            var grupos = context.Employee.GroupBy(x => x.Department).Count();
+           
+        }
         public void Update(Employee employeeChanges)
         {
             var employee = context.Employee.Attach(employeeChanges);
